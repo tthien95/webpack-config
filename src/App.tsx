@@ -1,7 +1,8 @@
+import styles from './App.module.scss';
+import './global.scss'
+
 function App() {
-  return (
-    <h1>React App created</h1>
-  )
+  return <h1 className={styles.red}>React App created</h1>;
 }
 
-export default App
+export default App;

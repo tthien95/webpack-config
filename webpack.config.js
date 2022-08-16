@@ -15,7 +15,10 @@ module.exports = ({ mode } = { mode: 'production' }) => {
     output: {
       publicPath: '/',
       path: path.resolve(__dirname, 'build'),
-      filename: isDevelopment ? '[name].js' : '[name].[hash].js'
+      filename: isDevelopment ? '[name].js' : '[name].[contenthash:8].js',
+      chunkFilename: isDevelopment
+        ? '[name].chunk.js'
+        : '[name].[contenthash:8].chunk.js'
     },
 
     module: {
@@ -29,6 +32,39 @@ module.exports = ({ mode } = { mode: 'production' }) => {
           test: /\.(t|j)sx?$/,
           exclude: /node_modules/,
           loader: 'babel-loader'
+        },
+        {
+          test: /\.module\.s(a|c)ss$/,
+          use: [
+            isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                sourceMap: isDevelopment
+              }
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: isDevelopment
+              }
+            }
+          ]
+        },
+        {
+          test: /\.s(a|c)ss$/,
+          exclude: /\.module.(s(a|c)ss)$/,
+          use: [
+            isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+            'css-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: isDevelopment
+              }
+            }
+          ]
         }
       ]
     },
@@ -42,7 +78,12 @@ module.exports = ({ mode } = { mode: 'production' }) => {
         React: 'react'
       }),
 
-      !isDevelopment && new CleanWebpackPlugin()
+      !isDevelopment && new CleanWebpackPlugin(),
+
+      new MiniCssExtractPlugin({
+        filename: isDevelopment ? '[name].css' : '[name].[contenthash:8].css',
+        chunkFilename: isDevelopment ? '[id].css' : '[id].[contenthash:8].css'
+      })
     ].filter(Boolean),
 
     resolve: {

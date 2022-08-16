@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Practicing webpack and other tool configurations",
   "private": "true",
-  "main": "index.js",
   "scripts": {
     "webpack": "webpack",
     "webpack-dev-server": "webpack-dev-server",
