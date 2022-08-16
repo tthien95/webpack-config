@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = ({ mode } = { mode: 'production' }) => {
   console.log(`mode is: ${mode}`);
@@ -83,11 +84,16 @@ module.exports = ({ mode } = { mode: 'production' }) => {
       new MiniCssExtractPlugin({
         filename: isDevelopment ? '[name].css' : '[name].[contenthash:8].css',
         chunkFilename: isDevelopment ? '[id].css' : '[id].[contenthash:8].css'
+      }),
+
+      new ESLintPlugin({
+        extensions: ['js', 'jsx', 'ts', 'tsx']
       })
     ].filter(Boolean),
 
     resolve: {
-      extensions: ['.js', '.jsx', '.ts', '.tsx']
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      modules: ['node_modules', path.resolve(__dirname, 'src')]
     },
 
     devServer: {
