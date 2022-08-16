@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { ProvidePlugin } = require('webpack');
 
 module.exports = ({ mode } = { mode: 'production' }) => {
   console.log(`mode is: ${mode}`);
@@ -10,11 +11,13 @@ module.exports = ({ mode } = { mode: 'production' }) => {
   return {
     mode,
     entry: './src/index',
+
     output: {
       publicPath: '/',
       path: path.resolve(__dirname, 'build'),
       filename: isDevelopment ? '[name].js' : '[name].[hash].js'
     },
+
     module: {
       rules: [
         {
@@ -29,15 +32,23 @@ module.exports = ({ mode } = { mode: 'production' }) => {
         }
       ]
     },
+
     plugins: [
       new HtmlWebpackPlugin({
         template: './public/index.html'
       }),
-      new CleanWebpackPlugin()
-    ],
+
+      new ProvidePlugin({
+        React: 'react'
+      }),
+
+      !isDevelopment && new CleanWebpackPlugin()
+    ].filter(Boolean),
+
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx']
     },
+
     devServer: {
       open: true,
       port: 3000
