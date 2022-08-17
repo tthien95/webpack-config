@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { ProvidePlugin } = require('webpack');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = ({ mode } = { mode: 'production' }) => {
@@ -75,10 +74,6 @@ module.exports = ({ mode } = { mode: 'production' }) => {
         template: './public/index.html'
       }),
 
-      new ProvidePlugin({
-        React: 'react'
-      }),
-
       !isDevelopment && new CleanWebpackPlugin(),
 
       new MiniCssExtractPlugin({
@@ -93,7 +88,7 @@ module.exports = ({ mode } = { mode: 'production' }) => {
 
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      modules: ['node_modules', path.resolve(__dirname, 'src')]
+      modules: [path.resolve(__dirname, 'src'), 'node_modules']
     },
 
     devServer: {
