@@ -15,10 +15,10 @@ module.exports = ({ mode } = { mode: 'production' }) => {
     output: {
       publicPath: '/',
       path: path.resolve(__dirname, 'build'),
-      filename: isDevelopment ? '[name].js' : '[name].[contenthash:8].js',
+      filename: isDevelopment ? 'static/js/[name].js' : 'static/js/[name].[contenthash:8].js',
       chunkFilename: isDevelopment
-        ? '[name].chunk.js'
-        : '[name].[contenthash:8].chunk.js'
+        ? 'static/js/[name].chunk.js'
+        : 'static/js/[name].[contenthash:8].chunk.js'
     },
 
     module: {
@@ -32,6 +32,17 @@ module.exports = ({ mode } = { mode: 'production' }) => {
           test: /\.(t|j)sx?$/,
           exclude: /node_modules/,
           loader: 'babel-loader'
+        },
+        {
+          test: /\.html$/,
+          use: [
+            {
+              loader: 'html-loader',
+              options: {
+                minimize: !isDevelopment
+              }
+            }
+          ]
         },
         {
           test: /\.module\.s(a|c)ss$/,
@@ -71,14 +82,15 @@ module.exports = ({ mode } = { mode: 'production' }) => {
 
     plugins: [
       new HtmlWebpackPlugin({
-        template: './public/index.html'
+        template: './public/index.html',
+        filename: './index.html'
       }),
 
       !isDevelopment && new CleanWebpackPlugin(),
 
       new MiniCssExtractPlugin({
-        filename: isDevelopment ? '[name].css' : '[name].[contenthash:8].css',
-        chunkFilename: isDevelopment ? '[id].css' : '[id].[contenthash:8].css'
+        filename: isDevelopment ? 'static/css/[name].css' : 'static/css/[name].[contenthash:8].css',
+        chunkFilename: isDevelopment ? 'static/css/[id].css' : 'static/css/[id].[contenthash:8].css'
       }),
 
       new ESLintPlugin({
@@ -92,6 +104,9 @@ module.exports = ({ mode } = { mode: 'production' }) => {
     },
 
     devServer: {
+      static: {
+        directory: path.resolve(__dirname, 'public'),
+      },
       open: true,
       port: 3000
     }
