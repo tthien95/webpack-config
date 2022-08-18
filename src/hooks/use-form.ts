@@ -6,7 +6,7 @@ import { FormFields } from 'type/form';
 import { User } from 'type/user';
 import { get } from 'utils/api-helper';
 import validators, { Validations } from 'utils/validation';
-import { toastActions } from '../store/toast-slice';
+import { toastActions } from 'store/toast-slice';
 
 interface UseFromProps {
   initialValues: FormFields | Record<string, never>;
