@@ -113,6 +113,7 @@ module.exports = ({ mode } = { mode: 'production' }) => {
       static: {
         directory: path.resolve(__dirname, 'public'),
       },
+      historyApiFallback: true,
       open: true,
       port: 3000,
     },
