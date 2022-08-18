@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import classes from './Toast.module.scss';
 import { toastActions, ToastState } from '../../store/toast-slice';
 
-enum notiStatus {
+enum NotiStatus {
   success = '#5cb85c',
   error = '#d9534f',
 }
@@ -36,7 +36,7 @@ const Toast = () => {
     <div role="alert" className={classes['notification-container']}>
       <div
         className={`${classes.notification} ${classes.toast}`}
-        style={{ backgroundColor: notiStatus[status] }}
+        style={{ backgroundColor: NotiStatus[status] }}
       >
         <button
           onClick={() => {

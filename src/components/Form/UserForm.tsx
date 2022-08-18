@@ -2,7 +2,7 @@ import { useCallback, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AxiosResponse } from 'axios';
-import useForm  from '../../hooks/use-form';
+import useForm from '../../hooks/use-form';
 import UsersListContext from '../../store/users-list';
 import { post, put } from '../../utils/api-helper';
 import { toastActions } from '../../store/toast-slice';
@@ -16,30 +16,30 @@ const initialValues: FormFields = {
   lastName: '',
   birthDate: '',
   email: '',
-  phone: ''
+  phone: '',
 };
 
 const validations: Validations = {
   firstName: {
     required: true,
-    validator: 'validateNoSpecialChar'
+    validator: 'validateNoSpecialChar',
   },
   lastName: {
     required: true,
-    validator: 'validateNoSpecialChar'
+    validator: 'validateNoSpecialChar',
   },
   birthDate: {
     required: true,
-    validator: null
+    validator: null,
   },
   email: {
     required: true,
-    validator: 'validateEmail'
+    validator: 'validateEmail',
   },
   phone: {
     required: false,
-    validator: 'validatePhone'
-  }
+    validator: 'validatePhone',
+  },
 };
 
 const fieldSet: FieldSet[] = [
@@ -49,19 +49,19 @@ const fieldSet: FieldSet[] = [
       {
         inputName: 'firstName',
         inputLabel: 'First Name',
-        inputType: 'text'
+        inputType: 'text',
       },
       {
         inputName: 'lastName',
         inputLabel: 'Last Name',
-        inputType: 'text'
+        inputType: 'text',
       },
       {
         inputName: 'birthDate',
         inputLabel: 'Birth Date',
-        inputType: 'date'
-      }
-    ]
+        inputType: 'date',
+      },
+    ],
   },
   {
     fieldSetLabel: 'Contact Info: ',
@@ -69,15 +69,15 @@ const fieldSet: FieldSet[] = [
       {
         inputName: 'email',
         inputLabel: 'Email address',
-        inputType: 'email'
+        inputType: 'email',
       },
       {
         inputName: 'phone',
         inputLabel: 'Phone',
-        inputType: 'tel'
-      }
-    ]
-  }
+        inputType: 'tel',
+      },
+    ],
+  },
 ];
 
 const UserForm = () => {
@@ -100,7 +100,7 @@ const UserForm = () => {
         toastActions.showNotification({
           status: 'success',
           title: 'Success',
-          message
+          message,
         })
       );
       navigate('/');
@@ -113,13 +113,13 @@ const UserForm = () => {
     if (userId) {
       url = `/users/${userId}`;
 
-      // eslint-disable-next-line no-use-before-define
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       return put(url, data).then((res) => {
         fnSuccess(res, updateUser, 'Update request has been sent successfully');
       }, fnHandleError);
     }
 
-    // eslint-disable-next-line no-use-before-define
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     return post(url, data).then((res) => {
       fnSuccess(res, addUser, 'Add request has been sent successfully');
     }, fnHandleError);
@@ -129,7 +129,7 @@ const UserForm = () => {
     initialValues,
     validations,
     userId,
-    onSubmit
+    onSubmit,
   });
 
   if (loading) {
