@@ -6,6 +6,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:@typescript-eslint/recommended",
     "airbnb-base",
     "plugin:import/typescript",
@@ -23,7 +24,6 @@
     "linebreak-style": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "import/extensions": "off",
-    "react/react-in-jsx-scope": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
     "no-unused-vars": "off",
