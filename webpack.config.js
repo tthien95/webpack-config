@@ -15,10 +15,12 @@ module.exports = ({ mode } = { mode: 'production' }) => {
     output: {
       publicPath: '/',
       path: path.resolve(__dirname, 'build'),
-      filename: isDevelopment ? 'static/js/[name].js' : 'static/js/[name].[contenthash:8].js',
+      filename: isDevelopment
+        ? 'static/js/[name].js'
+        : 'static/js/[name].[contenthash:8].js',
       chunkFilename: isDevelopment
         ? 'static/js/[name].chunk.js'
-        : 'static/js/[name].[contenthash:8].chunk.js'
+        : 'static/js/[name].[contenthash:8].chunk.js',
     },
 
     module: {
@@ -26,12 +28,12 @@ module.exports = ({ mode } = { mode: 'production' }) => {
         {
           test: /\.jpe?g|png$/,
           exclude: /node_modules/,
-          use: ['url-loader', 'file-loader']
+          use: ['url-loader', 'file-loader'],
         },
         {
           test: /\.(t|j)sx?$/,
           exclude: /node_modules/,
-          loader: 'babel-loader'
+          loader: 'babel-loader',
         },
         {
           test: /\.html$/,
@@ -39,10 +41,10 @@ module.exports = ({ mode } = { mode: 'production' }) => {
             {
               loader: 'html-loader',
               options: {
-                minimize: !isDevelopment
-              }
-            }
-          ]
+                minimize: !isDevelopment,
+              },
+            },
+          ],
         },
         {
           test: /\.module\.s(a|c)ss$/,
@@ -52,16 +54,16 @@ module.exports = ({ mode } = { mode: 'production' }) => {
               loader: 'css-loader',
               options: {
                 modules: true,
-                sourceMap: isDevelopment
-              }
+                sourceMap: isDevelopment,
+              },
             },
             {
               loader: 'sass-loader',
               options: {
-                sourceMap: isDevelopment
-              }
-            }
-          ]
+                sourceMap: isDevelopment,
+              },
+            },
+          ],
         },
         {
           test: /\.s(a|c)ss$/,
@@ -72,35 +74,39 @@ module.exports = ({ mode } = { mode: 'production' }) => {
             {
               loader: 'sass-loader',
               options: {
-                sourceMap: isDevelopment
-              }
-            }
-          ]
-        }
-      ]
+                sourceMap: isDevelopment,
+              },
+            },
+          ],
+        },
+      ],
     },
 
     plugins: [
       new HtmlWebpackPlugin({
         template: './public/index.html',
-        filename: './index.html'
+        filename: './index.html',
       }),
 
       !isDevelopment && new CleanWebpackPlugin(),
 
       new MiniCssExtractPlugin({
-        filename: isDevelopment ? 'static/css/[name].css' : 'static/css/[name].[contenthash:8].css',
-        chunkFilename: isDevelopment ? 'static/css/[id].css' : 'static/css/[id].[contenthash:8].css'
+        filename: isDevelopment
+          ? 'static/css/[name].css'
+          : 'static/css/[name].[contenthash:8].css',
+        chunkFilename: isDevelopment
+          ? 'static/css/[id].css'
+          : 'static/css/[id].[contenthash:8].css',
       }),
 
       new ESLintPlugin({
-        extensions: ['js', 'jsx', 'ts', 'tsx']
-      })
+        extensions: ['js', 'jsx', 'ts', 'tsx'],
+      }),
     ].filter(Boolean),
 
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      modules: [path.resolve(__dirname, 'src'), 'node_modules']
+      modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     },
 
     devServer: {
@@ -108,7 +114,7 @@ module.exports = ({ mode } = { mode: 'production' }) => {
         directory: path.resolve(__dirname, 'public'),
       },
       open: true,
-      port: 3000
-    }
+      port: 3000,
+    },
   };
 };

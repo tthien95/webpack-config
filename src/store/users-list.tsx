@@ -2,8 +2,8 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { AxiosError } from 'axios';
+import { User, UsersListContextType } from 'type/user';
 import { toastActions } from './toast-slice';
-import { User, UsersListContextType } from '../type/user';
 
 const UsersListContext = React.createContext<UsersListContextType>({
   usersList: [],

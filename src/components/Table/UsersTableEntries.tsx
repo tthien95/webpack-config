@@ -1,10 +1,10 @@
 import React, { useContext, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import UsersListContext from '../../store/users-list';
-import { deleteReq } from '../../utils/api-helper';
-import { toastActions } from '../../store/toast-slice';
-import { User } from '../../type/user';
+import { User } from 'type/user';
+import { deleteReq } from 'utils/api-helper';
+import UsersListContext from 'store/users-list';
+import { toastActions } from 'store/toast-slice';
 
 const dateFormat = new Intl.DateTimeFormat(undefined, { dateStyle: 'long' });
 

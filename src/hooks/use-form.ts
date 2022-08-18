@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError, AxiosResponse } from 'axios';
-import { get } from '../utils/api-helper';
-import validators, { Validations } from '../utils/validation';
+import { FormFields } from 'type/form';
+import { User } from 'type/user';
+import { get } from 'utils/api-helper';
+import validators, { Validations } from 'utils/validation';
 import { toastActions } from '../store/toast-slice';
-import { FormFields } from '../type/form';
-import { User } from '../type/user';
 
 interface UseFromProps {
   initialValues: FormFields | Record<string, never>;

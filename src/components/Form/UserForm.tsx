@@ -2,14 +2,14 @@ import { useCallback, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AxiosResponse } from 'axios';
-import useForm from '../../hooks/use-form';
-import UsersListContext from '../../store/users-list';
-import { post, put } from '../../utils/api-helper';
-import { toastActions } from '../../store/toast-slice';
+import { FormFields, FieldSet } from 'type/form';
+import { User } from 'type/user';
+import { post, put } from 'utils/api-helper';
+import { Validations } from 'utils/validation';
+import useForm from 'hooks/use-form';
+import UsersListContext from 'store/users-list';
+import { toastActions } from 'store/toast-slice';
 import FormFieldSet from './FormFieldSet';
-import { FormFields, FieldSet } from '../../type/form';
-import { User } from '../../type/user';
-import { Validations } from '../../utils/validation';
 
 const initialValues: FormFields = {
   firstName: '',
