@@ -52,17 +52,6 @@ module.exports = ({ mode } = { mode: 'production' }) => {
           loader: 'babel-loader',
         },
         {
-          test: /\.html$/,
-          use: [
-            {
-              loader: 'html-loader',
-              options: {
-                minimize: !isDevelopment,
-              },
-            },
-          ],
-        },
-        {
           test: /\.module\.s(a|c)ss$/,
           use: [
             isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,

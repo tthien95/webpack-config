@@ -5,6 +5,7 @@ import { User } from 'type/user';
 import { deleteReq } from 'utils/api-helper';
 import UsersListContext from 'store/users-list';
 import { toastActions } from 'store/toast-slice';
+import Spinner from '../UI/Spinner';
 
 const dateFormat = new Intl.DateTimeFormat(undefined, { dateStyle: 'long' });
 
@@ -39,13 +40,7 @@ const TableEntries: React.FC<{ usersData: User[] }> = ({ usersData }) => {
       <tr>
         <td colSpan={8} className="text-center">
           {isLoading ? (
-            <div
-              className="spinner-border"
-              style={{ textAlign: 'center' }}
-              role="status"
-            >
-              <span className="visually-hidden">Loading...</span>
-            </div>
+            <Spinner />
           ) : (
             <p className="text-center" data-testid="nodata">
               No Data

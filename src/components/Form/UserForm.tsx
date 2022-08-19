@@ -10,6 +10,7 @@ import useForm from 'hooks/use-form';
 import UsersListContext from 'store/users-list';
 import { toastActions } from 'store/toast-slice';
 import FormFieldSet from './FormFieldSet';
+import Spinner from '../UI/Spinner';
 
 const initialValues: FormFields = {
   firstName: '',
@@ -133,15 +134,7 @@ const UserForm = () => {
   });
 
   if (loading) {
-    return (
-      <div
-        className="spinner-border mx-auto mt-3"
-        style={{ display: 'block' }}
-        role="status"
-      >
-        <span className="visually-hidden">Loading...</span>
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (
