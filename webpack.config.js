@@ -21,14 +21,30 @@ module.exports = ({ mode } = { mode: 'production' }) => {
       chunkFilename: isDevelopment
         ? 'static/js/[name].chunk.js'
         : 'static/js/[name].[contenthash:8].chunk.js',
+      assetModuleFilename: 'static/media/[name].[hash][ext]',
     },
 
     module: {
       rules: [
         {
-          test: /\.jpe?g|png$/,
-          exclude: /node_modules/,
-          use: ['url-loader', 'file-loader'],
+          test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+          type: 'asset',
+          parser: {
+            dataUrlCondition: {
+              maxSize: 10000,
+            },
+          },
+        },
+        {
+          test: /\.svg$/i,
+          type: 'asset',
+          resourceQuery: /url/, // *.svg?url
+        },
+        {
+          test: /\.svg$/i,
+          issuer: /\.[jt]sx?$/,
+          resourceQuery: { not: [/url/] }, // exclude react component if *.svg?url
+          use: ['@svgr/webpack'],
         },
         {
           test: /\.(t|j)sx?$/,
@@ -116,6 +132,12 @@ module.exports = ({ mode } = { mode: 'production' }) => {
       historyApiFallback: true,
       open: true,
       port: 3000,
+    },
+
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+      },
     },
   };
 };
