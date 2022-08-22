@@ -17,12 +17,12 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "type/*": ["./src/type/*"],
-      "utils/*": ["./src/utils/*"],
-      "store/*": ["./src/store/*"],
-      "hooks/*": ["./src/hooks/*"]
+      "type/*": ["src/type/*"],
+      "utils/*": ["src/utils/*"],
+      "store/*": ["src/store/*"],
+      "hooks/*": ["src/hooks/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "webpack.*.js"]
 }

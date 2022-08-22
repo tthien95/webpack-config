@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navigation should match snapshot for error 1`] = `
+<div
+  class="notification-container"
+  role="alert"
+>
+  <div
+    class="notification toast"
+    style="background-color: rgb(217, 83, 79);"
+  >
+    <button>
+      X
+    </button>
+    <div>
+      <p
+        class="notification-title"
+      >
+        error
+      </p>
+      <p
+        class="notification-message"
+      >
+        Error Message
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Navigation should match snapshot for success 1`] = `
+<div
+  class="notification-container"
+  role="alert"
+>
+  <div
+    class="notification toast"
+    style="background-color: rgb(92, 184, 92);"
+  >
+    <button>
+      X
+    </button>
+    <div>
+      <p
+        class="notification-title"
+      >
+        Success
+      </p>
+      <p
+        class="notification-message"
+      >
+        Success Message
+      </p>
+    </div>
+  </div>
+</div>
+`;

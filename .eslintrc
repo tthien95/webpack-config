@@ -21,7 +21,14 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["react", "@typescript-eslint", "import"],
-  "ignorePatterns": ["gulpfile.js", "gulp/**/*", "webpack.config.js", "build/*"],
+  "ignorePatterns": [
+    "gulpfile.js",
+    "gulp/**/*",
+    "build/**/*",
+    "webpack.config.*",
+    "jest.config.*",
+    "setupTests.*"
+  ],
   "rules": {
     "linebreak-style": "off",
     "@typescript-eslint/no-non-null-assertion": "off",

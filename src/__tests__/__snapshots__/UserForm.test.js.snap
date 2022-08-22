@@ -1,0 +1,403 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserForm should display empty form for new user 1`] = `
+<div>
+  <form
+    class="container-md mt-3"
+  >
+    <fieldset
+      class="row container"
+    >
+      <legend>
+        Personal Info: 
+      </legend>
+      <div
+        class="row mb-3"
+      >
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="firstName"
+          >
+            First Name
+          </label>
+          <input
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="lastName"
+          >
+            Last Name
+          </label>
+          <input
+            class="form-control"
+            id="lastName"
+            name="lastName"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="row mb-3"
+      >
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="birthDate"
+          >
+            Birth Date
+          </label>
+          <input
+            class="form-control"
+            id="birthDate"
+            name="birthDate"
+            type="date"
+            value=""
+          />
+        </div>
+      </div>
+    </fieldset>
+    <fieldset
+      class="row container"
+    >
+      <legend>
+        Contact Info: 
+      </legend>
+      <div
+        class="row mb-3"
+      >
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="email"
+          >
+            Email address
+          </label>
+          <input
+            class="form-control"
+            id="email"
+            name="email"
+            type="email"
+            value=""
+          />
+        </div>
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="phone"
+          >
+            Phone
+          </label>
+          <input
+            class="form-control"
+            id="phone"
+            name="phone"
+            type="tel"
+            value=""
+          />
+        </div>
+      </div>
+    </fieldset>
+    <div
+      class="row container"
+    >
+      <div
+        class="col-6"
+      >
+        <button
+          class="btn btn-primary"
+          type="submit"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`UserForm should display form with user information for edit 1`] = `
+<div>
+  <form
+    class="container-md mt-3"
+  >
+    <fieldset
+      class="row container"
+    >
+      <legend>
+        Personal Info: 
+      </legend>
+      <div
+        class="row mb-3"
+      >
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="firstName"
+          >
+            First Name
+          </label>
+          <input
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            type="text"
+            value="Terry"
+          />
+        </div>
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="lastName"
+          >
+            Last Name
+          </label>
+          <input
+            class="form-control"
+            id="lastName"
+            name="lastName"
+            type="text"
+            value="Medhurst"
+          />
+        </div>
+      </div>
+      <div
+        class="row mb-3"
+      >
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="birthDate"
+          >
+            Birth Date
+          </label>
+          <input
+            class="form-control"
+            id="birthDate"
+            name="birthDate"
+            type="date"
+            value="2000-12-25"
+          />
+        </div>
+      </div>
+    </fieldset>
+    <fieldset
+      class="row container"
+    >
+      <legend>
+        Contact Info: 
+      </legend>
+      <div
+        class="row mb-3"
+      >
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="email"
+          >
+            Email address
+          </label>
+          <input
+            class="form-control"
+            id="email"
+            name="email"
+            type="email"
+            value="atuny0@sohu.com"
+          />
+        </div>
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="phone"
+          >
+            Phone
+          </label>
+          <input
+            class="form-control"
+            id="phone"
+            name="phone"
+            type="tel"
+            value="+63 791 675 8914"
+          />
+        </div>
+      </div>
+    </fieldset>
+    <div
+      class="row container"
+    >
+      <div
+        class="col-6"
+      >
+        <button
+          class="btn btn-primary"
+          type="submit"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`UserForm should show error messages for wrong inputs 1`] = `
+<div>
+  <form
+    class="container-md mt-3"
+  >
+    <fieldset
+      class="row container"
+    >
+      <legend>
+        Personal Info: 
+      </legend>
+      <div
+        class="row mb-3"
+      >
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="firstName"
+          >
+            First Name
+          </label>
+          <input
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="lastName"
+          >
+            Last Name
+          </label>
+          <input
+            class="form-control"
+            id="lastName"
+            name="lastName"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="row mb-3"
+      >
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="birthDate"
+          >
+            Birth Date
+          </label>
+          <input
+            class="form-control"
+            id="birthDate"
+            name="birthDate"
+            type="date"
+            value=""
+          />
+        </div>
+      </div>
+    </fieldset>
+    <fieldset
+      class="row container"
+    >
+      <legend>
+        Contact Info: 
+      </legend>
+      <div
+        class="row mb-3"
+      >
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="email"
+          >
+            Email address
+          </label>
+          <input
+            class="form-control"
+            id="email"
+            name="email"
+            type="email"
+            value="abc"
+          />
+        </div>
+        <div
+          class="col-6"
+        >
+          <label
+            class="form-label"
+            for="phone"
+          >
+            Phone
+          </label>
+          <input
+            class="form-control"
+            id="phone"
+            name="phone"
+            type="tel"
+            value="638914"
+          />
+        </div>
+      </div>
+    </fieldset>
+    <div
+      class="row container"
+    >
+      <div
+        class="col-6"
+      >
+        <button
+          class="btn btn-primary"
+          type="submit"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
