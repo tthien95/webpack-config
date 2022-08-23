@@ -3,47 +3,50 @@ import {
   render,
   waitForElementToBeRemoved,
   screen,
-  waitFor
+  waitFor,
+  fireEvent,
 } from '@testing-library/react';
-import UserForm from '../components/Form/UserForm';
-
 import { useSelector, useDispatch, Provider } from 'react-redux';
-import store from '../store/index';
-import { act, Simulate } from 'react-dom/test-utils';
-import { toastActions } from '../store/toast-slice';
-import axios from 'axios';
+// import { act, Simulate } from 'react-dom/test-utils';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+
+import UserForm from '../components/Form/UserForm';
+import store from '../store/index';
+import { toastActions } from '../store/toast-slice';
 import UsersListContext from '../store/users-list';
 import { baseUrl } from '../utils/api-helper';
-import userEvent from '@testing-library/user-event';
+import { User } from '../type/user';
+import { FormFields } from '../type/form';
 
-const sampleUser = {
+const sampleUser: User = {
   id: 1,
   firstName: 'Terry',
   lastName: 'Medhurst',
   birthDate: '2000-12-25',
   email: 'atuny0@sohu.com',
-  phone: '+63 791 675 8914'
+  phone: '+63 791 675 8914',
+  image: '',
 };
 
-const fields = {
+const fields: FormFields = {
   firstName: 'First Name',
   lastName: 'Last Name',
   birthDate: 'Birth Date',
   email: 'Email address',
-  phone: 'Phone'
+  phone: 'Phone',
 };
 
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
   useSelector: jest.fn(),
-  useDispatch: jest.fn()
+  useDispatch: jest.fn(),
 }));
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
-  useParams: jest.fn()
+  useParams: jest.fn(),
 }));
 
 jest.mock('axios');
@@ -51,28 +54,38 @@ jest.mock('axios');
 const wrapperRender = ({
   updateUser = () => {},
   addUser = () => {},
-  fnHandleError = () => {}
-} = {}) => {
-  return render(
+  fnHandleError = () => {},
+} = {}) =>
+  render(
     <Provider store={store}>
-      <UsersListContext.Provider value={{ updateUser, addUser, fnHandleError }}>
+      <UsersListContext.Provider
+        value={{
+          updateUser,
+          addUser,
+          fnHandleError,
+          usersList: [],
+          setUsersList: () => {},
+          isLoading: false,
+          setIsLoading: () => {},
+          deleteUser: () => {},
+        }}
+      >
         <UserForm />
       </UsersListContext.Provider>
     </Provider>
   );
-};
 
 describe('UserForm', () => {
   afterAll(cleanup);
 
   beforeEach(() => {
-    useDispatch.mockReturnValue(() => {});
-    useNavigate.mockReturnValue(() => {});
-    useSelector.mockReturnValue(() => {});
+    (useDispatch as jest.Mock).mockReturnValue(() => {});
+    (useNavigate as jest.Mock).mockReturnValue(() => {});
+    (useSelector as jest.Mock).mockReturnValue(() => {});
   });
 
   it('should display empty form for new user', () => {
-    useParams.mockReturnValue({ userId: null });
+    (useParams as jest.Mock).mockReturnValue({ userId: null });
 
     const { container } = wrapperRender();
 
@@ -80,9 +93,9 @@ describe('UserForm', () => {
   });
 
   it('should display form with user information for edit', async () => {
-    useParams.mockReturnValue({ userId: '1' });
-    axios.get.mockResolvedValue({
-      data: { ...sampleUser }
+    (useParams as jest.Mock).mockReturnValue({ userId: '1' });
+    (axios.get as jest.Mock).mockResolvedValue({
+      data: { ...sampleUser },
     });
 
     const { container } = wrapperRender();
@@ -94,39 +107,39 @@ describe('UserForm', () => {
   });
 
   it('should submit add user form with correct inputs', async () => {
-    const testData = {
+    const testData: FormFields = {
       firstName: 'abc',
       lastName: 'def',
       birthDate: '2000-12-25',
       email: 'abc@def.com',
-      phone: '+63 791 675 8914'
+      phone: '+63 791 675 8914',
     };
-    useParams.mockReturnValue({ userId: null });
+    (useParams as jest.Mock).mockReturnValue({ userId: null });
 
     const dispatch = jest.fn();
 
     const navigate = jest.fn();
     const addUser = jest.fn();
 
-    useDispatch.mockReturnValue(dispatch);
-    useNavigate.mockReturnValue(navigate);
-    axios.post.mockResolvedValue({
+    (useDispatch as jest.Mock).mockReturnValue(dispatch);
+    (useNavigate as jest.Mock).mockReturnValue(navigate);
+    (axios.post as jest.Mock).mockResolvedValue({
       data: {
         id: 1,
-        ...testData
-      }
+        ...testData,
+      },
     });
 
     wrapperRender({ addUser });
 
-    for (const key in fields) {
-      if (Object.hasOwnProperty.call(fields, key)) {
-        const element = fields[key];
-        userEvent.type(screen.getByLabelText(element), testData[key]);
-      }
-    }
+    Object.keys(fields).forEach((key) => {
+      const element = fields[key];
+      fireEvent.change(screen.getByLabelText(element), {
+        target: { value: testData[key] },
+      });
+    });
 
-    userEvent.click(screen.getByRole('button'));
+    fireEvent.click(screen.getByRole('button'));
 
     expect(axios.post).toBeCalled();
     expect(axios.post).toBeCalledWith(`${baseUrl}/users/add`, testData);
@@ -136,7 +149,7 @@ describe('UserForm', () => {
       toastActions.showNotification({
         status: 'success',
         title: 'Success',
-        message: 'Add request has been sent successfully'
+        message: 'Add request has been sent successfully',
       })
     );
     expect(navigate).toBeCalled();
@@ -144,12 +157,12 @@ describe('UserForm', () => {
   });
 
   it('should submit edit request when inputs are all correct', async () => {
-    useParams.mockReturnValue({ userId: '1' });
+    (useParams as jest.Mock).mockReturnValue({ userId: '1' });
 
-    const newInput = {
+    const newInput: Record<string, string | number> = {
       ...sampleUser,
       firstName: 'Ter',
-      lastName: 'Med'
+      lastName: 'Med',
     };
 
     const dispatch = jest.fn();
@@ -157,35 +170,34 @@ describe('UserForm', () => {
     const navigate = jest.fn();
     const updateUser = jest.fn();
 
-    axios.get.mockResolvedValue({
-      data: { ...sampleUser }
+    (axios.get as jest.Mock).mockResolvedValue({
+      data: { ...sampleUser },
     });
 
-    axios.put.mockResolvedValue({
-      data: { ...newInput }
+    (axios.put as jest.Mock).mockResolvedValue({
+      data: { ...newInput },
     });
 
-    useDispatch.mockReturnValue(dispatch);
-    useNavigate.mockReturnValue(navigate);
+    (useDispatch as jest.Mock).mockReturnValue(dispatch);
+    (useNavigate as jest.Mock).mockReturnValue(navigate);
 
     delete newInput.id;
+    delete newInput.image;
 
     wrapperRender({ updateUser });
     await waitForElementToBeRemoved(() => screen.queryByRole('status'));
     expect(axios.get).toBeCalled();
     expect(axios.get).toBeCalledWith(`${baseUrl}/users/${sampleUser.id}`);
 
-    act(() => {
-      Simulate.change(screen.getByLabelText('First Name'), {
-        target: { value: newInput.firstName, name: 'firstName' }
-      });
-
-      Simulate.change(screen.getByLabelText('Last Name'), {
-        target: { value: newInput.lastName, name: 'lastName' }
-      });
+    fireEvent.change(screen.getByLabelText('First Name'), {
+      target: { value: newInput.firstName },
     });
 
-    userEvent.click(screen.getByRole('button'));
+    fireEvent.change(screen.getByLabelText('Last Name'), {
+      target: { value: newInput.lastName },
+    });
+
+    fireEvent.click(screen.getByRole('button'));
 
     expect(axios.put).toBeCalled();
     expect(axios.put).toBeCalledWith(
@@ -198,7 +210,7 @@ describe('UserForm', () => {
       toastActions.showNotification({
         status: 'success',
         title: 'Success',
-        message: 'Update request has been sent successfully'
+        message: 'Update request has been sent successfully',
       })
     );
     expect(navigate).toBeCalled();
@@ -206,49 +218,45 @@ describe('UserForm', () => {
   });
 
   it('should show error messages for wrong inputs', () => {
-    const testData = {
+    const testData: Record<string, string> = {
       firstName: '',
       lastName: '',
       birthDate: '',
       email: 'abc',
-      phone: '638914'
+      phone: '638914',
     };
 
-    useParams.mockReturnValue({ userId: null });
+    (useParams as jest.Mock).mockReturnValue({ userId: null });
 
     const { container } = wrapperRender();
 
-    act(() => {
-      for (const key in fields) {
-        if (Object.hasOwnProperty.call(fields, key)) {
-          const element = fields[key];
-          Simulate.change(screen.getByLabelText(element), {
-            target: { value: testData[key], name: key }
-          });
-        }
-      }
+    Object.keys(fields).forEach((key) => {
+      const element = fields[key];
+      fireEvent.change(screen.getByLabelText(element), {
+        target: { value: testData[key] },
+      });
     });
 
-    userEvent.click(screen.getByRole('button'));
+    fireEvent.click(screen.getByRole('button'));
 
     expect(container).toMatchSnapshot();
     expect(axios.post).not.toBeCalled();
   });
 
   it('should show error and redirect to home', async () => {
-    useParams.mockReturnValue({ userId: '11241515' });
+    (useParams as jest.Mock).mockReturnValue({ userId: '11241515' });
 
-    axios.get.mockRejectedValue({
+    (axios.get as jest.Mock).mockRejectedValue({
       response: {
-        statusText: 'Error message'
-      }
+        statusText: 'Error message',
+      },
     });
 
     const dispatch = jest.fn();
     const navigate = jest.fn();
 
-    useDispatch.mockReturnValue(dispatch);
-    useNavigate.mockReturnValue(navigate);
+    (useDispatch as jest.Mock).mockReturnValue(dispatch);
+    (useNavigate as jest.Mock).mockReturnValue(navigate);
 
     wrapperRender();
     await waitForElementToBeRemoved(() => screen.queryByRole('status'));
@@ -260,36 +268,7 @@ describe('UserForm', () => {
       toastActions.showNotification({
         status: 'error',
         title: 'Error',
-        message: 'Error message'
-      })
-    );
-    expect(navigate).toBeCalled();
-    expect(navigate).toBeCalledWith('/');
-  });
-
-  it('should handle error in success callback', async () => {
-    useParams.mockReturnValue({ userId: '1' });
-    axios.get.mockResolvedValue({
-      message: 'Error message'
-    });
-
-    const dispatch = jest.fn();
-    const navigate = jest.fn();
-
-    useDispatch.mockReturnValue(dispatch);
-    useNavigate.mockReturnValue(navigate);
-
-    wrapperRender();
-    await waitForElementToBeRemoved(() => screen.queryByRole('status'));
-    expect(axios.get).toBeCalled();
-    expect(axios.get).toBeCalledWith(`${baseUrl}/users/1`);
-
-    expect(dispatch).toBeCalled();
-    expect(dispatch).toBeCalledWith(
-      toastActions.showNotification({
-        status: 'error',
-        title: 'Error',
-        message: 'Error message'
+        message: 'Error message',
       })
     );
     expect(navigate).toBeCalled();

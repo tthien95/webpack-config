@@ -1,102 +1,101 @@
-import { cleanup, render, waitFor, within } from '@testing-library/react';
-import Toast from '../components/Toast/Toast';
-
+import { cleanup, fireEvent, render, within } from '@testing-library/react';
 import { useSelector, useDispatch, Provider } from 'react-redux';
 import { createPortal } from 'react-dom';
+
+import Toast from '../components/Toast/Toast';
 import store from '../store/index';
 import { toastActions } from '../store/toast-slice';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
   useSelector: jest.fn(),
-  useDispatch: jest.fn()
+  useDispatch: jest.fn(),
 }));
 
 jest.mock('react-dom', () => ({
   ...jest.requireActual('react-dom'),
-  createPortal: jest.fn()
+  createPortal: jest.fn(),
 }));
 
-const renderWithProvider = () => {
-  return render(
+const renderWithProvider = () =>
+  render(
     <Provider store={store}>
       <Toast />
     </Provider>
   );
-};
 
-describe('Navigation', () => {
+describe('Toast', () => {
   beforeEach(() => {
-    useDispatch.mockReturnValue(() => {});
-    createPortal.mockImplementation((component) => component);
+    (useDispatch as jest.Mock).mockReturnValue(() => {});
+    (createPortal as jest.Mock).mockImplementation((component) => component);
   });
   afterAll(cleanup);
 
   it('should match snapshot for success', () => {
-    useSelector.mockReturnValueOnce({
+    (useSelector as jest.Mock).mockReturnValueOnce({
       status: 'success',
       title: 'Success',
-      message: 'Success Message'
+      message: 'Success Message',
     });
     const { container } = renderWithProvider();
     expect(within(container).getByRole('alert')).toMatchSnapshot();
   });
 
   it('should match snapshot for error', () => {
-    useSelector.mockReturnValueOnce({
+    (useSelector as jest.Mock).mockReturnValueOnce({
       status: 'error',
       title: 'error',
-      message: 'Error Message'
+      message: 'Error Message',
     });
     const { container } = renderWithProvider();
     expect(within(container).getByRole('alert')).toMatchSnapshot();
   });
 
   it('should not render toast when there is no notification', () => {
-    useSelector.mockReturnValueOnce(null);
+    (useSelector as jest.Mock).mockReturnValueOnce(null);
     const { container } = renderWithProvider();
     expect(within(container).queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('should trigger handler to close notification when press X button', () => {
-    useSelector.mockReturnValueOnce({
+    (useSelector as jest.Mock).mockReturnValueOnce({
       status: 'success',
       title: 'Success',
-      message: 'Success Message'
+      message: 'Success Message',
     });
 
     const dispatch = jest.fn();
 
-    useDispatch.mockReturnValueOnce(dispatch);
+    (useDispatch as jest.Mock).mockReturnValueOnce(dispatch);
 
     const { container } = renderWithProvider();
     const noti = within(container).queryByRole('alert');
-    const button = within(noti).getByRole('button');
+    const button = within(noti!).getByRole('button');
 
-    userEvent.click(button)
+    fireEvent.click(button);
 
     expect(dispatch).toBeCalledTimes(1);
     expect(dispatch).toBeCalledWith(toastActions.hideNotification());
   });
 
   it('should trigger handler to close notification after 3 seconds', async () => {
-    useSelector.mockReturnValueOnce({
+    jest.useFakeTimers();
+
+    (useSelector as jest.Mock).mockReturnValueOnce({
       status: 'success',
       title: 'Success',
-      message: 'Success Message'
+      message: 'Success Message',
     });
 
     const dispatch = jest.fn();
 
-    useDispatch.mockReturnValueOnce(dispatch);
+    (useDispatch as jest.Mock).mockReturnValueOnce(dispatch);
 
     renderWithProvider();
 
-    await waitFor(() => expect(dispatch).toHaveBeenCalledTimes(1), {
-      timeout: 3100
-    });
+    jest.advanceTimersByTime(3100);
 
+    expect(dispatch).toHaveBeenCalledTimes(1);
     expect(dispatch).toBeCalledWith(toastActions.hideNotification());
   });
 });

@@ -1,9 +1,9 @@
 import { render, screen, cleanup, waitFor } from '@testing-library/react';
-import UsersTable from '../components/Table/UsersTable';
 import { Provider } from 'react-redux';
+import axios from 'axios';
+import UsersTable from '../components/Table/UsersTable';
 import UsersListContext from '../store/users-list';
 import store from '../store/index';
-import axios from 'axios';
 
 jest.mock('axios');
 
@@ -14,37 +14,40 @@ const sampleUsers = [
     lastName: 'Medhurst',
     birthDate: '2000-12-25',
     email: 'atuny0@sohu.com',
-    phone: '+63 791 675 8914'
-  }
+    phone: '+63 791 675 8914',
+  },
 ];
 
 const renderWithContext = ({
   setIsLoading = () => {},
   setUsersList = () => {},
-  fnHandleError = () => {}
-} = {}) => {
-  return render(
+  fnHandleError = () => {},
+} = {}) =>
+  render(
     <Provider store={store}>
       <UsersListContext.Provider
         value={{
           setUsersList,
           usersList: [],
           setIsLoading,
-          fnHandleError
+          fnHandleError,
+          isLoading: false,
+          addUser: () => {},
+          updateUser: () => {},
+          deleteUser: () => {},
         }}
       >
         <UsersTable />
       </UsersListContext.Provider>
     </Provider>
   );
-};
 
 describe('UsersTable', () => {
-  beforeEach (() => {
-    axios.get.mockResolvedValue({
+  beforeEach(() => {
+    (axios.get as jest.Mock).mockResolvedValue({
       data: {
-        users: []
-      }
+        users: [],
+      },
     });
   });
 
@@ -60,10 +63,10 @@ describe('UsersTable', () => {
     const setIsLoading = jest.fn();
     const setUsersList = jest.fn();
 
-    axios.get.mockResolvedValueOnce({
+    (axios.get as jest.Mock).mockResolvedValueOnce({
       data: {
-        users: [...sampleUsers]
-      }
+        users: [...sampleUsers],
+      },
     });
 
     renderWithContext({ setIsLoading, setUsersList });
@@ -76,5 +79,4 @@ describe('UsersTable', () => {
     expect(setIsLoading.mock.calls[0][0]).toBeTruthy();
     expect(setIsLoading.mock.calls[1][0]).toBeFalsy();
   });
-
 });

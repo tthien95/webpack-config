@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Navigation should match snapshot for error 1`] = `
+exports[`Toast should match snapshot for error 1`] = `
 <div
   class="notification-container"
   role="alert"
@@ -28,7 +28,7 @@ exports[`Navigation should match snapshot for error 1`] = `
 </div>
 `;
 
-exports[`Navigation should match snapshot for success 1`] = `
+exports[`Toast should match snapshot for success 1`] = `
 <div
   class="notification-container"
   role="alert"

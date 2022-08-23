@@ -1,22 +1,31 @@
-import { screen, render, cleanup, within, waitFor } from '@testing-library/react';
-import UsersListContext from '../store/users-list';
-import UsersTableEntries from '../components/Table/UsersTableEntries';
+import {
+  screen,
+  render,
+  cleanup,
+  within,
+  waitFor,
+  fireEvent,
+} from '@testing-library/react';
 import { Provider } from 'react-redux';
-import store from '../store/index';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
-import userEvent from '@testing-library/user-event';
+
+import { User } from '../type/user';
+import UsersListContext from '../store/users-list';
+import UsersTableEntries from '../components/Table/UsersTableEntries';
+import store from '../store/index';
 
 jest.mock('axios');
 
-const sampleUsers = [
+const sampleUsers: User[] = [
   {
     id: 1,
     firstName: 'Terry',
     lastName: 'Medhurst',
     birthDate: '2000-12-25',
     email: 'atuny0@sohu.com',
-    phone: '+63 791 675 8914'
+    phone: '+63 791 675 8914',
+    image: '',
   },
   {
     id: 2,
@@ -24,18 +33,19 @@ const sampleUsers = [
     lastName: 'Quigley',
     birthDate: '2003-08-02',
     email: 'hbingley1@plala.or.jp',
-    phone: '+07 813 117 7139'
-  }
+    phone: '+07 813 117 7139',
+    image: '',
+  },
 ];
 
 const renderWithContext = ({
   setIsLoading = () => {},
   deleteUser = () => {},
   isLoading = false,
-  usersList = [],
-  fnHandleError = () => {}
-}) => {
-  return render(
+  usersList = [] as User[],
+  fnHandleError = () => {},
+}) =>
+  render(
     <BrowserRouter>
       <Provider store={store}>
         <UsersListContext.Provider
@@ -43,7 +53,11 @@ const renderWithContext = ({
             isLoading,
             deleteUser,
             setIsLoading,
-            fnHandleError
+            fnHandleError,
+            usersList,
+            setUsersList: () => {},
+            addUser: () => {},
+            updateUser: () => {},
           }}
         >
           <table>
@@ -55,7 +69,6 @@ const renderWithContext = ({
       </Provider>
     </BrowserRouter>
   );
-};
 
 describe('UsersTableEntries', () => {
   afterAll(cleanup);
@@ -86,8 +99,8 @@ describe('UsersTableEntries', () => {
   it('should have action buttons for each rows', () => {
     const user = [
       {
-        ...sampleUsers[0]
-      }
+        ...sampleUsers[0],
+      },
     ];
 
     renderWithContext({ isLoading: false, usersList: user });
@@ -101,22 +114,27 @@ describe('UsersTableEntries', () => {
   it('should delete button trigger event', async () => {
     const user = [
       {
-        ...sampleUsers[0]
-      }
+        ...sampleUsers[0],
+      },
     ];
 
-    axios.delete.mockResolvedValue('ok');
+    (axios.delete as jest.Mock).mockResolvedValue('ok');
 
     const setIsLoading = jest.fn();
-    const deleteUser = jest.fn()
+    const deleteUser = jest.fn();
 
-    renderWithContext({ isLoading: false, usersList: user, setIsLoading, deleteUser });
+    renderWithContext({
+      isLoading: false,
+      usersList: user,
+      setIsLoading,
+      deleteUser,
+    });
     const lastCell = within(screen.getAllByRole('row')[0]).getAllByRole(
       'cell'
     )[6];
 
     const button = within(lastCell).getByText('Delete');
-    userEvent.click(button)
+    fireEvent.click(button);
 
     await waitFor(() => expect(setIsLoading).toHaveBeenCalledTimes(2));
 
@@ -125,6 +143,5 @@ describe('UsersTableEntries', () => {
 
     expect(setIsLoading.mock.calls[0][0]).toBeTruthy();
     expect(setIsLoading.mock.calls[1][0]).toBeFalsy();
-    
   });
 });

@@ -2,7 +2,7 @@
 import { AxiosError } from 'axios';
 
 export interface User {
-  id: string;
+  id: string | number;
   image: string;
   email: string;
   birthDate: string;

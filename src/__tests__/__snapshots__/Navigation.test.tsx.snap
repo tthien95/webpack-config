@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navigation should match snapshot 1`] = `
+<header>
+  <div
+    class="wrap"
+  >
+    <div
+      class="logo"
+    >
+      <a
+        href="#!"
+      >
+        Web Logo
+      </a>
+    </div>
+    <div
+      class="nav-mobile"
+    >
+      <a
+        href="#!"
+        id="nav-toggle"
+      >
+        <span />
+      </a>
+    </div>
+    <nav
+      class="nav-container"
+      id="navbar"
+    >
+      <ul>
+        <li>
+          <a
+            aria-current="page"
+            class="nav-active"
+            href="/"
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            href="/new-user"
+          >
+            Add User
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+`;
