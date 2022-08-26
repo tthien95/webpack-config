@@ -11,6 +11,11 @@ module.exports = {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}', '!src/**/*.d.ts'],
 
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '<rootDir>/src/__tests__/test_utils/',
+  ],
+
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
 
@@ -40,9 +45,14 @@ module.exports = {
     '<rootDir>/src/**/?(*.)+(spec|test).[tj]s?(x)',
   ],
 
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '<rootDir>/src/__tests__/test_utils/',
+  ],
+
   moduleNameMapper: {
     ...(pathsToModuleNameMapper(compilerOptions.paths, {
-      prefix: '<rootDir>/',
+      prefix: '<rootDir>/src/',
     }) || {}),
     '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
   },
