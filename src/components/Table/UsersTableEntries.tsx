@@ -1,10 +1,10 @@
 import React, { useContext, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { User } from 'type/user';
-import { deleteReq } from 'utils/api-helper';
-import UsersListContext from 'store/users-list';
-import { toastActions } from 'store/toast-slice';
+import { User } from '@type/user';
+import { deleteReq } from '@utils/api-helper';
+import UsersListContext from '@store/users-list';
+import { toastActions } from '@store/toast-slice';
 import Spinner from '../UI/Spinner';
 
 const dateFormat = new Intl.DateTimeFormat(undefined, { dateStyle: 'long' });
@@ -15,7 +15,7 @@ const TableEntries: React.FC<{ usersData: User[] }> = ({ usersData }) => {
   const dispatch = useDispatch();
 
   const handleDelete = useCallback(
-    (userId: string) => {
+    (userId: string | number) => {
       setIsLoading(true);
       deleteReq(`/users/${userId}`)
         .then(() => {
@@ -67,8 +67,8 @@ const TableEntries: React.FC<{ usersData: User[] }> = ({ usersData }) => {
             </td>
             <td className="align-middle">{phone}</td>
             <td className="align-middle">{email}</td>
-            <td className="align-middle">{firstName}</td>
             <td className="align-middle">{lastName}</td>
+            <td className="align-middle">{firstName}</td>
             <td className="align-middle">
               <div className="d-flex justify-content-between">
                 <Link to={`/user/${id}`}>

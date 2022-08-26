@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormFields, FieldElement } from 'type/form';
+import { FormFields, FieldElement } from '@type/form';
 import FormInput from './FormInput';
 
 interface FormFieldSetProps {

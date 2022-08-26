@@ -55,7 +55,7 @@ export const UserContextProvider: React.FC<React.PropsWithChildren> = ({
     }
   };
 
-  const deleteUser = (userId: string) => {
+  const deleteUser = (userId: string | number) => {
     const currUsersList = [...usersList];
     // eslint-disable-next-line eqeqeq
     const userIndx = currUsersList.findIndex(({ id }) => id == userId);

@@ -15,12 +15,13 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "type/*": ["src/type/*"],
-      "utils/*": ["src/utils/*"],
-      "store/*": ["src/store/*"],
-      "hooks/*": ["src/hooks/*"]
+      "@type/*": ["type/*"],
+      "@utils/*": ["utils/*"],
+      "@store/*": ["store/*"],
+      "@hooks/*": ["hooks/*"],
+      "@test_utils/*": ["__tests__/test_utils/*"]
     }
   },
   "include": ["src/**/*"],

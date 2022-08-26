@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import { User } from 'type/user';
-import { get } from 'utils/api-helper';
-import UsersListContext from 'store/users-list';
+import { User } from '@type/user';
+import { get } from '@utils/api-helper';
+import UsersListContext from '@store/users-list';
 import UsersTableEntries from './UsersTableEntries';
 
 const UsersTable = () => {
