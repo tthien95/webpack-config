@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = ({ mode } = { mode: 'production' }) => {
   console.log(`mode is: ${mode}`);
@@ -112,6 +113,7 @@ module.exports = ({ mode } = { mode: 'production' }) => {
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+      plugins: [new TsconfigPathsPlugin()],
     },
 
     devServer: {
